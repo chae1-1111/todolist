@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "../styles/Todolist.scss";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { BsXCircle } from "react-icons/bs";
+import { HiPencilAlt } from "react-icons/hi";
+import { MdCheckCircle } from "react-icons/md";
 
 function Todolist() {
     // 1. 예쁘게 꾸미기
@@ -11,11 +13,12 @@ function Todolist() {
     // 5. 브라우저를 종료했다가 들어와도 투두리스트 유지되기
     // 6. 일정내에 완료하지 못한 일정 dim처리
     // 7. 덜 끝낸 일정 세모표시
-    // asldkfjlafsd
 
     const [text, setText] = useState("");
     const [todolist, setTodolist] = useState([]);
     const [count, setCount] = useState(0);
+    const [editIndex, setEditIndex] = useState(-1);
+    const [editText, setEditText] = useState("");
 
     const textValue = (input) => {
         if (input.key === "Enter") {
@@ -35,6 +38,13 @@ function Todolist() {
         setCount(count + 1);
         setTodolist(newTodolist);
         setText("");
+        setEditIndex(-1);
+        setEditText("");
+    };
+
+    const tryEdit = (index) => {
+        setEditIndex(index);
+        setEditText(todolist[index]);
     };
 
     const removeTodo = (index) => {
@@ -47,6 +57,30 @@ function Todolist() {
         }
         setCount(count - 1);
         setTodolist(newTodolist);
+        setEditIndex(-1);
+        setEditText("");
+    };
+
+    const editValue = (input, index) => {
+        if (input.key === "Enter") {
+            editTodo(index);
+            return;
+        }
+        setEditText(input.target.value);
+    };
+
+    const editTodo = (index) => {
+        const newTodolist = [];
+        for (let i = 0; i < todolist.length; i++) {
+            if (i === index) {
+                newTodolist[i] = editText;
+                continue;
+            }
+            newTodolist[i] = todolist[i];
+        }
+        setTodolist(newTodolist);
+        setEditIndex(-1);
+        setEditText("");
     };
 
     return (
@@ -65,9 +99,27 @@ function Todolist() {
             </div>
             <div className="Body">
                 {todolist.map((value, index) => (
-                    <div key={index}>
-                        {value}
-                        <BsXCircle onClick={() => removeTodo(index)} />
+                    <div className="todo" key={index}>
+                        {index === editIndex ? (
+                            <input
+                                className="editInput"
+                                onKeyUp={(input) => editValue(input, index)}
+                                defaultValue={value}
+                            />
+                        ) : (
+                            value
+                        )}
+                        <div className="icons">
+                            {index === editIndex ? (
+                                <MdCheckCircle
+                                    onClick={() => editTodo(index)}
+                                />
+                            ) : (
+                                <HiPencilAlt onClick={() => tryEdit(index)} />
+                            )}
+
+                            <BsXCircle onClick={() => removeTodo(index)} />
+                        </div>
                     </div>
                 ))}
             </div>
