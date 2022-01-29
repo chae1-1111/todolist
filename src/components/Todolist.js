@@ -11,6 +11,7 @@ function Todolist() {
     // 5. 브라우저를 종료했다가 들어와도 투두리스트 유지되기
     // 6. 일정내에 완료하지 못한 일정 dim처리
     // 7. 덜 끝낸 일정 세모표시
+    // asldkfjlafsd
 
     const [text, setText] = useState("");
     const [todolist, setTodolist] = useState([]);
