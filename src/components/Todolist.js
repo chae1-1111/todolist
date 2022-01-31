@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Cookies } from "react-cookie";
 import "../styles/Todolist.scss";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { BsXCircle } from "react-icons/bs";
